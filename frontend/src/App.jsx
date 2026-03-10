@@ -14,7 +14,7 @@ function App() {
 
   // Fetch all applications on load
   useEffect(() => {
-    fetch("http://localhost:5000/applications")
+    fetch("https://internship-tracker-backend-yvgs.onrender.com/applications")
       .then(res => res.json())
       .then(data => setApplications(data))
   }, [])
@@ -24,7 +24,7 @@ function App() {
     e.preventDefault()
     if (!company || !role) return
 
-    fetch("http://localhost:5000/applications", {
+    fetch("https://internship-tracker-backend-yvgs.onrender.com/applications", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ company, role, date, status })
@@ -48,13 +48,13 @@ function App() {
 
   // Delete application
   function handleDelete(id) {
-    fetch(`http://localhost:5000/applications/${id}`, { method: "DELETE" })
+    fetch(`https://internship-tracker-backend-yvgs.onrender.com/applications/${id}`, { method: "DELETE" })
     setApplications(applications.filter(app => app._id !== id))
   }
 
   // Update status
   function handleStatusChange(id, newStatus) {
-    fetch(`http://localhost:5000/applications/${id}`, {
+    fetch(`https://internship-tracker-backend-yvgs.onrender.com/applications/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus })

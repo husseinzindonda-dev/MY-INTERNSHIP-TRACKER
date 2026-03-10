@@ -175,4 +175,4 @@ Respond in this exact JSON format with no extra text:
   }
 })
 
-app.listen(5000, () => console.log("Server running on http://localhost:5000"))
+app.listen(5000, () => console.log("Server running on https://internship-tracker-backend-yvgs.onrender.com"))

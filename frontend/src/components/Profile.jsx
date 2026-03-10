@@ -8,7 +8,7 @@ function Profile({ onProfileSaved }) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch("http://localhost:5000/profile")
+    fetch("https://internship-tracker-backend-yvgs.onrender.com/profile")
       .then(res => res.json())
       .then(data => {
         if (data.bio) {
@@ -22,7 +22,7 @@ function Profile({ onProfileSaved }) {
     if (!resumeText) return
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:5000/parse-resume", {
+      const res = await fetch("https://internship-tracker-backend-yvgs.onrender.com/parse-resume", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resumeText })
@@ -42,7 +42,7 @@ function Profile({ onProfileSaved }) {
   }
 
   function handleSave() {
-    fetch("http://localhost:5000/profile", {
+    fetch("https://internship-tracker-backend-yvgs.onrender.com/profile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bio })
