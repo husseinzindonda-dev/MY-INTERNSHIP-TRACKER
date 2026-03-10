@@ -5,7 +5,9 @@ const mongoose = require("mongoose")
 const Application = require("./models/Application")
 const OpenAI = require("openai")
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const openai = process.env.OPENAI_API_KEY 
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) 
+  : null
 
 const app = express()
 app.use(express.json())
@@ -92,6 +94,7 @@ app.post("/profile", async (req, res) => {
 // PARSE RESUME
 app.post("/parse-resume", async (req, res) => {
   try {
+    if (!openai) return res.status(503).json({ error: "AI features not available" })
     const { resumeText } = req.body
     if (!resumeText) return res.status(400).json({ error: "No resume text provided" })
 
@@ -132,6 +135,7 @@ ${resumeText}`
 // MATCH scoring
 app.post("/match", async (req, res) => {
   try {
+    if (!openai) return res.status(503).json({ error: "AI features not available" })
     const { jobDescription, userProfile } = req.body
     if (!jobDescription || !userProfile) {
       return res.status(400).json({ error: "Job description and profile are required" })
