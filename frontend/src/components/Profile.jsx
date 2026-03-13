@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 
+const API = import.meta.env.VITE_API_URL
+
 function Profile({ onProfileSaved }) {
   const [bio, setBio] = useState("")
   const [resumeText, setResumeText] = useState("")
@@ -8,7 +10,7 @@ function Profile({ onProfileSaved }) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch("https://internship-tracker-backend-yvgs.onrender.com/profile")
+    fetch(`${API}/profile`)
       .then(res => res.json())
       .then(data => {
         if (data.bio) {
@@ -22,7 +24,7 @@ function Profile({ onProfileSaved }) {
     if (!resumeText) return
     setLoading(true)
     try {
-      const res = await fetch("https://internship-tracker-backend-yvgs.onrender.com/parse-resume", {
+      const res = await fetch(`${API}/parse-resume`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resumeText })
@@ -42,7 +44,7 @@ function Profile({ onProfileSaved }) {
   }
 
   function handleSave() {
-    fetch("https://internship-tracker-backend-yvgs.onrender.com/profile", {
+    fetch(`${API}/profile`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bio })
@@ -58,14 +60,13 @@ function Profile({ onProfileSaved }) {
       style={{ background: '#161616', border: '1px solid #1a1a1a', borderRadius: 16 }}
       className="p-8 mb-10"
     >
-      {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
           <h2 style={{ fontFamily: 'Syne, sans-serif', color: '#e8e0d0', letterSpacing: '-0.3px' }} className="text-xl font-semibold">
             My Profile
           </h2>
           <p style={{ color: '#444', fontSize: 13 }} className="mt-1">
-            {bio ? "Profile saved — used automatically for match scoring" : "Paste your resume and Claude will generate your profile"}
+            {bio ? "Profile saved — used automatically for match scoring" : "Paste your resume and AI will generate your profile"}
           </p>
         </div>
         <button
@@ -77,7 +78,6 @@ function Profile({ onProfileSaved }) {
         </button>
       </div>
 
-      {/* PASTE RESUME */}
       <div className="mt-6 flex flex-col gap-3">
         <label style={{ color: '#555', fontSize: 12, letterSpacing: '0.5px' }} className="uppercase">
           Paste Resume Text
@@ -85,7 +85,7 @@ function Profile({ onProfileSaved }) {
         <textarea
           className="input-field rounded-lg px-4 py-3 text-sm resize-none"
           style={{ background: '#1f1f1f', border: '1px solid #2a2a2a', color: '#e8e0d0', minHeight: 140 }}
-          placeholder="Paste your full resume text here — Claude will extract your profile automatically..."
+          placeholder="Paste your full resume text here — AI will extract your profile automatically..."
           value={resumeText}
           onChange={e => setResumeText(e.target.value)}
         />
@@ -99,7 +99,6 @@ function Profile({ onProfileSaved }) {
         </button>
       </div>
 
-      {/* EDIT GENERATED PROFILE */}
       {open && bio && (
         <div className="mt-6 flex flex-col gap-4 card-enter" style={{ borderTop: '1px solid #1a1a1a', paddingTop: 24 }}>
           <label style={{ color: '#555', fontSize: 12, letterSpacing: '0.5px' }} className="uppercase">
@@ -120,9 +119,6 @@ function Profile({ onProfileSaved }) {
           </button>
         </div>
       )}
-
     </section>
   )
 }
-
-export default Profile

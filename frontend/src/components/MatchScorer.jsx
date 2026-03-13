@@ -1,6 +1,8 @@
 import { useState } from "react"
 
-function MatchScorer({userProfile}) {
+const API = import.meta.env.VITE_API_URL
+
+function MatchScorer({ userProfile }) {
   const [jobDescription, setJobDescription] = useState("")
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -11,7 +13,7 @@ function MatchScorer({userProfile}) {
     setResult(null)
 
     try {
-      const res = await fetch("https://internship-tracker-backend-yvgs.onrender.com/match", {
+      const res = await fetch(`${API}/match`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobDescription, userProfile })
@@ -42,8 +44,6 @@ function MatchScorer({userProfile}) {
       </p>
 
       <div className="flex flex-col gap-4">
-
-        {/* JOB DESCRIPTION */}
         <div className="flex flex-col gap-2">
           <label style={{ color: '#555', fontSize: 12, letterSpacing: '0.5px' }} className="uppercase">
             Job Description
@@ -58,11 +58,11 @@ function MatchScorer({userProfile}) {
         </div>
 
         {!userProfile && (
-            <p style={{ color: '#df6b6b', fontSize: 12 }}>
-                ⚠ No profile found — add your profile above first
-            </p>
+          <p style={{ color: '#df6b6b', fontSize: 12 }}>
+            ⚠ No profile found — add your profile above first
+          </p>
         )}
-        {/* BUTTON */}
+
         <button
           onClick={handleMatch}
           disabled={loading}
@@ -73,18 +73,10 @@ function MatchScorer({userProfile}) {
         </button>
       </div>
 
-      {/* RESULTS */}
       {result && (
-        <div
-          className="mt-8 card-enter"
-          style={{ borderTop: '1px solid #1a1a1a', paddingTop: 28 }}
-        >
-
-          {/* SCORE */}
+        <div className="mt-8 card-enter" style={{ borderTop: '1px solid #1a1a1a', paddingTop: 28 }}>
           <div className="flex items-center gap-6 mb-6">
-            <div
-              style={{ width: 80, height: 80, borderRadius: '50%', border: `3px solid ${scoreColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
-            >
+            <div style={{ width: 80, height: 80, borderRadius: '50%', border: `3px solid ${scoreColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <span style={{ fontFamily: 'Syne, sans-serif', color: scoreColor, fontSize: 22, fontWeight: 700 }}>
                 {result.score}
               </span>
@@ -92,9 +84,7 @@ function MatchScorer({userProfile}) {
             <p style={{ color: '#888', fontSize: 14, lineHeight: 1.6 }}>{result.summary}</p>
           </div>
 
-          {/* STRENGTHS & GAPS */}
           <div className="flex gap-6 mb-6">
-
             <div className="flex-1">
               <p style={{ color: '#6bdf8f', fontSize: 11, fontWeight: 600, letterSpacing: '0.5px' }} className="uppercase mb-3">
                 Strengths
@@ -120,22 +110,16 @@ function MatchScorer({userProfile}) {
                 ))}
               </ul>
             </div>
-
           </div>
 
-          {/* ADVICE */}
-          <div
-            style={{ background: '#1f1f1f', border: '1px solid #2a2a2a', borderRadius: 10, padding: '14px 18px' }}
-          >
+          <div style={{ background: '#1f1f1f', border: '1px solid #2a2a2a', borderRadius: 10, padding: '14px 18px' }}>
             <p style={{ color: '#dfcc6b', fontSize: 11, fontWeight: 600, letterSpacing: '0.5px' }} className="uppercase mb-2">
               Top Advice
             </p>
             <p style={{ color: '#888', fontSize: 13, lineHeight: 1.6 }}>{result.advice}</p>
           </div>
-
         </div>
       )}
-
     </section>
   )
 }
